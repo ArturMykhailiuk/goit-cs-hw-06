@@ -14,8 +14,8 @@ class HttpHandler(BaseHTTPRequestHandler):
         pr_url = urllib.parse.urlparse(self.path)
         if pr_url.path == '/':
             self.send_html_file('index.html')
-        elif pr_url.path == '/contact':
-            self.send_html_file('contact.html')
+        elif pr_url.path == '/message':
+            self.send_html_file('message.html')
         else:
             if pathlib.Path().joinpath(pr_url.path[1:]).exists():
                 self.send_static()
@@ -84,20 +84,16 @@ def run_socket():
             client_socket.close()
 
 def work_with_mongo(data_dict):
-    client = MongoClient('localhost', 27017)
+    client = MongoClient("mongodb://mongodb:27017/")
     db = client['MYBASE']
 
-    # Отримуємо колекцію 'users'
-    collection = db['users187']
+    # Отримуємо колекцію
+    collection = db['Messages']
 
     # Вставляємо новий документ
-    user = {
-        'name': 'John Doe',
-        'email': 'johndoe@example.com',
-        'age': 30
-    }
-    result = collection.insert_one(user)
+    result = collection.insert_one(data_dict)
     print('Inserted document with ID:', result.inserted_id)
+    
 
 if __name__ == '__main__':
     # Запуск процесу для HTTP-серверу

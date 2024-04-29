@@ -11,6 +11,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 
     volumes:
       - ./data:/data/db
+
+    
   main:
     build: .
     ports:
